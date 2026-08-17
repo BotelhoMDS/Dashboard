@@ -9,11 +9,6 @@ import {
   geoPath,
 } from "d3-geo";
 
-import {
-  scaleLinear,
-} from "d3-scale";
-
-
 type Coordenadas =
   | number[]
   | Coordenadas[];
@@ -300,23 +295,6 @@ export function MapaBrasilUf({
     );
 
 
-  const escalaCor =
-    useMemo(
-      () =>
-        scaleLinear<string>()
-          .domain([
-            0,
-            maiorValor || 1,
-          ])
-          .range([
-            "#ecfdf5",
-            "#0f766e",
-          ])
-          .clamp(true),
-      [maiorValor],
-    );
-
-
   const caminhos =
     useMemo(
       () => {
@@ -376,9 +354,12 @@ export function MapaBrasilUf({
 
               valor,
 
-              cor:
-                escalaCor(
-                  valor,
+              opacidade:
+                0.14
+                + 0.86
+                * (
+                  valor
+                  / (maiorValor || 1)
                 ),
 
               d:
@@ -393,7 +374,7 @@ export function MapaBrasilUf({
       [
         geojson,
         dadosPorUf,
-        escalaCor,
+        maiorValor,
       ],
     );
 
@@ -464,10 +445,9 @@ export function MapaBrasilUf({
                   d={
                     estado.d
                   }
-                  fill={
-                    estado.cor
-                  }
-                  stroke="#ffffff"
+                  fill="var(--color-brand-blue)"
+                  fillOpacity={estado.opacidade}
+                  stroke="var(--panel)"
                   strokeWidth={1}
                   vectorEffect="non-scaling-stroke"
                   className="cursor-pointer"
@@ -539,7 +519,7 @@ export function MapaBrasilUf({
           className="h-2 w-full rounded-full"
           style={{
             background:
-              "linear-gradient(to right, #ecfdf5, #0f766e)",
+              "linear-gradient(to right, color-mix(in srgb, var(--color-brand-blue) 14%, var(--panel)), var(--color-brand-blue))",
           }}
         />
 

@@ -1,243 +1,163 @@
-# Dashboard dados Saúde
+# Dashboard Dados em Saúde
 
 Dashboard web para análise de dados de saúde armazenados em PostgreSQL.
 
-O projeto é dividido em:
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Recharts, TanStack Table e D3.
+- **Backend:** Python, FastAPI e psycopg.
+- **Produção:** Docker Compose, Nginx e imagens independentes para frontend e backend.
+- **Banco:** PostgreSQL externo, acessado diretamente ou por túnel SSH.
 
-- **Frontend:** React + TypeScript + Vite + Tailwind CSS + Recharts + TanStack Table + D3
-- **Backend:** Python + FastAPI + psycopg
-- **Banco de dados:** PostgreSQL remoto, acessado por túnel SSH
+## Execução com Docker — recomendada
 
+### Pré-requisitos
 
-# Pré-requisitos
+- Docker Engine 24 ou superior.
+- Docker Compose v2 (`docker compose`).
+- Acesso de rede ao PostgreSQL utilizado pelo projeto.
 
-Antes de executar o projeto, instale:
+Não é necessário instalar Node.js ou Python na máquina de hospedagem.
 
-- Git
-- Python 3.11 ou superior
-- Node.js 20.19 ou superior
-- npm
-- cliente OpenSSH
+### 1. Configure o banco de dados
 
-O acesso ao PostgreSQL depende também de credenciais e acesso SSH à infraestrutura remota.
-
----
-
-# 1. Clonar o repositório
-
-Abra o terminal e execute:
+Na raiz do projeto:
 
 ```bash
-git clone https://github.com/Gustav0Luiz/Dashboard.git
-cd Dashboard
+cp .env.example .env
 ```
 
----
+Edite o `.env` da raiz com as credenciais reais:
 
-# 2. Abrir o túnel SSH para o PostgreSQL
+```env
+DB_HOST=host.docker.internal
+DB_PORT=5433
+DB_NAME=nome_do_banco
+DB_USER=usuario
+DB_PASSWORD=senha
+CORS_ORIGINS=http://localhost:8080
+```
 
-Antes de iniciar o backend, abra um túnel SSH em um terminal separado.
+Use o endereço real do PostgreSQL em `DB_HOST` quando o banco for diretamente
+acessível pela máquina. Use `host.docker.internal` quando o banco estiver
+disponível por um túnel aberto na máquina que executa o Docker.
 
+> O arquivo `.env` contém segredos, é ignorado pelo Git e não é copiado
+> para as imagens.
+
+### 2. Suba a aplicação
 
 ```bash
-ssh -J lbduser@150.164.2.44 -L 8501:localhost:8501 datalake_datasus@150.164.2.13
+docker compose up --build -d
 ```
 
-
-> Mantenha esse terminal aberto durante toda a execução do dashboard.
-
-Após o túnel estar aberto, o PostgreSQL remoto ficará acessível localmente em:
+Abra:
 
 ```text
-127.0.0.1:5433
+http://localhost:8080
 ```
 
----
+Em outra máquina da rede, substitua `localhost` pelo IP ou domínio do servidor.
+Para publicar em outra porta:
 
-# 3. Configurar o backend
+```bash
+DASHBOARD_PORT=80 docker compose up --build -d
+```
 
-A partir da raiz do projeto:
+Libere somente essa porta no firewall. O backend permanece disponível apenas na
+rede interna do Compose; o Nginx encaminha as requisições `/api` para ele.
+
+### 3. Operação
+
+```bash
+# Ver estado e healthchecks
+docker compose ps
+
+# Acompanhar logs
+docker compose logs -f
+
+# Reiniciar os serviços
+docker compose restart
+
+# Atualizar após receber uma nova versão
+docker compose up --build -d
+
+# Encerrar
+docker compose down
+```
+
+O healthcheck público do frontend está em `http://localhost:8080/health`.
+O healthcheck do backend é executado internamente pelo Compose.
+
+## PostgreSQL por túnel SSH
+
+O processo SSH continua sendo executado no host, fora dos contêineres. O túnel
+precisa aceitar conexões vindas da bridge do Docker, e `DB_HOST` deve ser
+`host.docker.internal`.
+
+Exemplo genérico:
+
+```bash
+ssh -g -L 0.0.0.0:5433:localhost:5432 usuario@servidor
+```
+
+Ajuste o destino e as portas à infraestrutura real. Restrinja o acesso à porta
+do túnel no firewall do host; ela não deve ser publicada na internet.
+
+Para testar a conexão a partir do backend:
+
+```bash
+docker compose exec backend python -c \
+  "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/health/database').read().decode())"
+```
+
+## Desenvolvimento sem Docker
+
+### Backend
+
+Requer Python 3.11 ou superior.
 
 ```bash
 python -m venv .venv
-```
-
-## Ativar o ambiente virtual
-
-### Windows PowerShell
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
-
-### Windows CMD
-
-```bat
-.\.venv\Scripts\activate.bat
-```
-
-### Linux/macOS
-
-```bash
 source .venv/bin/activate
-```
-
-Instale as dependências:
-
-```bash
 python -m pip install --upgrade pip
 pip install -r backend/requirements.txt
-```
-
----
-
-# 4. Criar o arquivo de configuração do backend
-
-Crie:
-
-```text
-backend/.env
-```
-
-com:
-
-```env
-DB_HOST=127.0.0.1
-DB_PORT=5433
-DB_NAME=DB_NAME
-DB_USER=SEU_USUARIO
-DB_PASSWORD=SUA_SENHA
-```
-
-
-
-# 5. Iniciar o backend
-
-Execute este comando **a partir da raiz do repositório**:
-
-```bash
+cp backend/.env.example backend/.env
 python -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-O backend ficará disponível em:
+- API: `http://127.0.0.1:8000`
+- Documentação: `http://127.0.0.1:8000/docs`
+- Banco: `http://127.0.0.1:8000/health/database`
 
-```text
-http://127.0.0.1:8000
-```
+Para execução local sem Docker, altere `DB_HOST` em `backend/.env` para o host
+apropriado — normalmente `127.0.0.1` quando há um túnel local.
 
-Para testar a API:
+### Frontend
 
-```text
-http://127.0.0.1:8000/health
-```
-
-Para testar a conexão com o PostgreSQL:
-
-```text
-http://127.0.0.1:8000/health/database
-```
-
-A resposta esperada da conexão é semelhante a:
-
-```json
-{
-  "status": "ok",
-  "database": "connected",
-  "result": 1
-}
-```
-
-A documentação automática do FastAPI pode ser acessada em:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
-
-# 6. Configurar o frontend
-
-Abra um **novo terminal** e entre na pasta:
+Requer Node.js 20.19 ou superior.
 
 ```bash
 cd frontend
-```
-
-Instale as dependências:
-
-```bash
-npm install
-```
-
-O `package-lock.json` deve ser mantido no repositório para que todos instalem versões compatíveis das dependências.
-
-## Variável da API
-
-Crie opcionalmente:
-
-```text
-frontend/.env
-```
-
-com:
-
-```env
-VITE_API_URL=http://127.0.0.1:8000
-```
-
-O frontend também possui `http://127.0.0.1:8000` como endereço padrão da API, mas manter o `.env` torna a configuração explícita.
-
-
----
-
-# 7. Iniciar o frontend
-
-Dentro de `frontend/`:
-
-```bash
+npm ci
+cp .env.example .env
 npm run dev
 ```
 
+Frontend: `http://localhost:5173`
 
-Abra esse endereço no navegador.
-```text
-http://localhost:5173
-```
+O arquivo `frontend/.env.example` aponta para a API local. Na imagem de produção,
+o frontend usa a mesma origem e o proxy `/api` do Nginx automaticamente.
 
-
----
-
-# Ordem recomendada para iniciar o projeto
-
-Use três terminais.
-
-## Terminal 1 — túnel SSH
+## Estrutura de implantação
 
 ```text
-SSH → PostgreSQL
+Navegador :8080
+      │
+      ▼
+Nginx / React
+      │ /api
+      ▼
+FastAPI :8000 (rede interna)
+      │
+      ▼
+PostgreSQL externo ou túnel no host
 ```
-
-Mantenha aberto.
-
-## Terminal 2 — backend
-
-Na raiz do repositório:
-
-```bash
-python -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-## Terminal 3 — frontend
-
-Na pasta `frontend/`:
-
-```bash
-npm run dev
-```
-
-Depois abra:
-
-```text
-http://localhost:5173
-```
-

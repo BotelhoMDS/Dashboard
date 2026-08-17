@@ -328,7 +328,7 @@ function GraficoBarrasHorizontal({
 
           <Bar
             dataKey={valorKey}
-            fill="#0f766e"
+            fill="var(--color-brand-blue)"
             radius={[
               0,
               5,
@@ -943,7 +943,7 @@ export function Medicamentos() {
 
 
   return (
-    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
+    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-[1440px] px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
       <header>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           💊 Medicamentos
@@ -1302,7 +1302,7 @@ export function Medicamentos() {
 
                           <Bar
                             dataKey="estoque_total"
-                            fill="#0f766e"
+                            fill="var(--color-brand-blue)"
                             radius={[
                               5,
                               5,
@@ -1508,7 +1508,7 @@ export function Medicamentos() {
                                 <Line
                                   type="monotone"
                                   dataKey="preco"
-                                  stroke="#0f766e"
+                                  stroke="var(--color-brand-blue)"
                                   strokeWidth={
                                     2
                                   }

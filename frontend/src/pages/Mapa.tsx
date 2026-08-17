@@ -825,7 +825,7 @@ export function Mapa() {
 
 
   return (
-    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
+    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-[1440px] px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
       <header>
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
           Visão geográfica

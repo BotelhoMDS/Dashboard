@@ -38,8 +38,8 @@ const modulos = [
 export function Home() {
   return (
     <main>
-      <section className="border-b border-teal-100/80 bg-gradient-to-br from-white via-teal-50/30 to-cyan-50/40">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-18 lg:px-8 lg:py-24">
+      <section className="landing-hero border-b border-teal-100/80">
+        <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 sm:py-18 lg:px-8 lg:py-24">
           <div className="max-w-3xl">
             <span className="mb-4 inline-flex rounded-full border border-teal-100 bg-teal-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-teal-700 sm:mb-5 sm:text-xs">
               Dados em saúde
@@ -59,7 +59,7 @@ export function Home() {
             <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap">
               <Link
                 to="/mapa"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-teal-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-800"
+                className="button-cta inline-flex min-h-11 items-center justify-center px-5 py-3 text-sm font-semibold transition"
               >
                 Explorar mapa
               </Link>
@@ -77,7 +77,7 @@ export function Home() {
 
       <section
         id="modulos"
-        className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14"
+        className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14"
       >
         <div className="mb-6 sm:mb-8">
           <p className="text-sm font-semibold text-slate-500">

@@ -1112,7 +1112,7 @@ export function Leitos() {
 
 
   return (
-    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
+    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-[1440px] px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
       <header>
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">
           Capacidade hospitalar
@@ -1648,7 +1648,7 @@ export function Leitos() {
                                       <Bar
                                         dataKey="leitos_gerais"
                                         name="Leitos gerais"
-                                        fill="#0f766e"
+                                        fill="var(--color-brand-blue)"
                                         radius={[
                                           0,
                                           4,
@@ -1660,7 +1660,7 @@ export function Leitos() {
                                       <Bar
                                         dataKey="leitos_sus"
                                         name="Leitos SUS"
-                                        fill="#0891b2"
+                                        fill="var(--step-5)"
                                         radius={[
                                           0,
                                           4,
@@ -1720,7 +1720,7 @@ export function Leitos() {
                                       <Bar
                                         dataKey="leitos_uti"
                                         name="Leitos de UTI"
-                                        fill="#0f766e"
+                                        fill="var(--color-brand-blue)"
                                         radius={[
                                           0,
                                           4,
@@ -1732,7 +1732,7 @@ export function Leitos() {
                                       <Bar
                                         dataKey="leitos_uti_sus"
                                         name="UTI SUS"
-                                        fill="#0891b2"
+                                        fill="var(--step-5)"
                                         radius={[
                                           0,
                                           4,
@@ -1820,7 +1820,7 @@ export function Leitos() {
                                     <Bar
                                       dataKey="total"
                                       name="Total"
-                                      fill="#0f766e"
+                                      fill="var(--color-brand-blue)"
                                       radius={[
                                         5,
                                         5,
@@ -1832,7 +1832,7 @@ export function Leitos() {
                                     <Bar
                                       dataKey="sus"
                                       name="SUS"
-                                      fill="#0891b2"
+                                      fill="var(--step-5)"
                                       radius={[
                                         5,
                                         5,
@@ -1922,7 +1922,7 @@ export function Leitos() {
                                       type="monotone"
                                       dataKey="leitos_gerais"
                                       name="Leitos gerais"
-                                      stroke="#0f766e"
+                                      stroke="var(--color-brand-blue)"
                                       strokeWidth={2.5}
                                       dot={false}
                                     />
@@ -1931,7 +1931,7 @@ export function Leitos() {
                                       type="monotone"
                                       dataKey="leitos_sus"
                                       name="Leitos SUS"
-                                      stroke="#0891b2"
+                                      stroke="var(--step-5)"
                                       strokeWidth={2.5}
                                       dot={false}
                                     />
@@ -1940,7 +1940,7 @@ export function Leitos() {
                                       type="monotone"
                                       dataKey="leitos_uti"
                                       name="Leitos de UTI"
-                                      stroke="#2563eb"
+                                      stroke="var(--step-2)"
                                       strokeWidth={2}
                                       dot={false}
                                     />
@@ -1949,7 +1949,7 @@ export function Leitos() {
                                       type="monotone"
                                       dataKey="leitos_uti_sus"
                                       name="UTI SUS"
-                                      stroke="#7c3aed"
+                                      stroke="var(--step-1)"
                                       strokeWidth={2}
                                       dot={false}
                                     />
@@ -2062,7 +2062,7 @@ export function Leitos() {
                                     <Bar
                                       dataKey="leitos_gerais"
                                       name="Leitos gerais"
-                                      fill="#0f766e"
+                                      fill="var(--color-brand-blue)"
                                       radius={[
                                         0,
                                         5,

@@ -431,7 +431,7 @@ function GraficoRanking({
 
           <Bar
             dataKey="valor_total"
-            fill="#0f766e"
+            fill="var(--color-brand-blue)"
             radius={[
               0,
               5,
@@ -1264,7 +1264,7 @@ export function Compras() {
 
 
   return (
-    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
+    <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-[1440px] px-4 py-7 sm:px-6 sm:py-9 lg:px-8 lg:py-10">
       <header>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           🛒 Compras
@@ -1710,7 +1710,7 @@ export function Compras() {
                               <Line
                                 type="monotone"
                                 dataKey="valor_total"
-                                stroke="#0f766e"
+                                stroke="var(--color-brand-blue)"
                                 strokeWidth={
                                   2
                                 }
@@ -1794,7 +1794,7 @@ export function Compras() {
                               <Line
                                 type="monotone"
                                 dataKey="numero_compras"
-                                stroke="#0f766e"
+                                stroke="var(--color-brand-blue)"
                                 strokeWidth={
                                   2
                                 }

@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import { Leitos } from "./pages/Leitos";
 import { Mapa } from "./pages/Mapa";
 import { Medicamentos } from "./pages/Medicamentos";
+import { Fornecedores } from "./pages/Fornecedores";
 
 
 export default function App() {
@@ -36,6 +37,10 @@ export default function App() {
           path="/mapa"
           element={<Mapa />}
         />
+        <Route
+          path="/fornecedores"
+          element={<Fornecedores />}
+/>
       </Routes>
     </Layout>
   );
